@@ -46,7 +46,7 @@ class Main:
                         piece = board.squares[clicked_row][clicked_col].piece
                         #check if its a valid piece 
                         if piece.color == game.next_player:
-                            board.calc_moves(piece , clicked_row , clicked_col)
+                            board.calc_moves(piece , clicked_row , clicked_col , bool=True)
                             dragger.save_initial(event.pos)
                             dragger.drag_piece(piece)
                             #shw methods 
@@ -87,9 +87,15 @@ class Main:
                         final = Square(released_row , released_col)
                         move = Move(initial , final)
 
-                        #valid move
+                        #valid move..?
                         if board.valid_move(dragger.piece , move):
+                            #normal capture
+                            captured = board.squares[released_row][released_col].has_piece()
                             board.move(dragger.piece , move)
+
+                            board.set_true_en_passant(dragger.piece)
+                            #play the sound
+                            game.play_sound(captured)
                             #draw show Method
                             game.show_bg(screen)
                             game.show_last_move(screen)
@@ -100,7 +106,20 @@ class Main:
 
                     dragger.undrag_piece()
 
+                #key press
+                elif event.type == pygame.KEYDOWN:
 
+                    #for changing the theme
+                    if event.key == pygame.K_t:
+                        game.change_theme()
+
+                    #for restarting the game
+                    if event.key == pygame.K_r:
+                        game.reset()
+                        game = self.game
+                        screen = self.screen
+                        dragger = self.game.dragger
+                        board = self.game.board
 
                 #for quiting the aaplication
                 elif event.type == pygame.QUIT:
