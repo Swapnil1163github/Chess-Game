@@ -7,7 +7,11 @@ class Square:
         self.col = col
         self.row = row
         self.piece = piece
-        self.alphacol = self.ALPHACOLS[col]
+        if col in self.ALPHACOLS:
+            self.alphacol = self.ALPHACOLS[col]
+        else:
+            print(f"Error: Invalid column value {col}")
+            self.alphacol = None 
 
     def __eq__(self, other):
         return self.row == other.row and self.col == other.col

@@ -100,12 +100,12 @@ class Game:
 
     def show_hover(self , surface):
         if self.hovered_sqr:
-             #color 
-             color = (180 , 180 , 180)
+            #color 
+            color = (180 , 180 , 180)
             #rect
-             rect = (self.hovered_sqr.col * SQSIZE , self.hovered_sqr.row * SQSIZE , SQSIZE ,SQSIZE )
+            rect = (self.hovered_sqr.col * SQSIZE , self.hovered_sqr.row * SQSIZE , SQSIZE ,SQSIZE )
             #blit
-             pygame.draw.rect(surface , color , rect , width = 3)
+            pygame.draw.rect(surface , color , rect , width = 3)
 
 
 
@@ -113,8 +113,18 @@ class Game:
     def next_turn(self):
         self.next_player = 'white' if self.next_player == 'black' else 'black'
 
-    def set_hover(self , row , col):
-        self.hovered_sqr = self.board.squares[row][col]
+    #def set_hover(self , row , col):
+    def set_hover(self, mouse_x, mouse_y):
+        row = mouse_y # SQUARE_SIZE
+        col = mouse_x # SQUARE_SIZE
+    
+    # Ensure row and col are within the bounds of the chessboard
+        if 0 <= row < 8 and 0 <= col < 8:
+            self.hovered_sqr = self.board.squares[row][col]
+        else:
+            self.hovered_sqr = None
+            print(f"Mouse is outside the board: row={row}, col={col}")
+
 
     def change_theme(self):
         self.config.change_theme()
